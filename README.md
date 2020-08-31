@@ -172,6 +172,8 @@ $ npm run start
 - [jwt-simple](https://github.com/hokaccha/node-jwt-simple) - Encode and Decode JWT
 - [moment](https://momentjs.com) - Parsing, validating, manipulating, and formatting dates
 - [passport](http://www.passportjs.org) - Middleware for authenticate
+- [fasam-imc-calc](https://www.npmjs.com/package/fasam-imc-calc) - Calculator IMC
+- [convert-units](https://github.com/ben-ng/convert-units) - Convertor of units
 
 ## Thanks
 This README was based in [README](https://github.com/steniowagner/mindcast-server/blob/master/README.md)
