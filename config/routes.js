@@ -44,4 +44,8 @@ module.exports = app => {
     app.route('/height/:id')
         .all(app.controllers.passport.authenticate())
         .delete(app.controllers.height.Delete)
+
+    // Routes Log
+    app.route('/logs/:type')
+        .get(app.controllers.logs)
 }
