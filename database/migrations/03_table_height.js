@@ -3,6 +3,7 @@ exports.up = function (knex, Promise) {
         table.increments('id').primary()
         table.string('title').notNullable()
         table.string('date').notNullable()
+        table.datetime('created_at').notNullable()
         table.integer('user_id').notNullable()
             .references('id')
             .inTable('users_table')

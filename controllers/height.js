@@ -15,19 +15,6 @@ module.exports = app => {
             })
     }
 
-    const GetLast = (req, res) => {
-        app.db('height_table').where({ user_id: req.user.id }).select('id', 'title', 'date')
-            .then(heightUser => {
-                if (heightUser.length <= 0) return res.json([])
-
-                res.send(heightUser[heightUser.length - 1])
-            })
-            .catch(err => {
-                app.logger.error(err, __filename)
-                res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar sua altura.' })
-            })
-    }
-
     const Insert = async (req, res) => {
         const { title, date } = req.body
 
@@ -39,6 +26,7 @@ module.exports = app => {
             await trx('height_table').insert({
                 title,
                 date: moment(new Date()).format('dddd').toLowerCase(),
+                created_at: new Date(),
                 user_id: req.user.id
             })
 
@@ -71,5 +59,5 @@ module.exports = app => {
 
     }
 
-    return { Get, GetLast, Insert, Delete }
+    return { Get, Insert, Delete }
 }

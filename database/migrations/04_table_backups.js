@@ -2,6 +2,7 @@ exports.up = function (knex, Promise) {
     return knex.schema.createTable('backup_table', table => {
         table.increments('id').primary()
         table.string('data').notNullable()
+        table.datetime('created_at').notNullable()
         table.integer('user_id').notNullable()
             .references('id')
             .inTable('users_table')

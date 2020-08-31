@@ -1,3 +1,4 @@
+require('dotenv').config()
 const consign = require('consign')
 const app = require('express')()
 const db = require('./database/db')
@@ -15,5 +16,6 @@ consign()
     .into(app)
 
 app.db = db
+app.secretKey = process.env.SECRET_KEY
 
-let server = app.listen('3000', console.log('[server] -> start success.'))
+app.listen('3000', console.log('[server] -> start success.'))

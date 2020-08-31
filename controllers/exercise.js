@@ -15,19 +15,6 @@ module.exports = app => {
             })
     }
 
-    const GetLast = (req, res) => {
-        app.db('exercise_table').where({ user_id: req.user.id }).select('id', 'title', 'day_of_week', 'loop', 'delay_time')
-            .then(exerciseUser => {
-                if (exerciseUser.length <= 0) return res.json([])
-
-                res.send(exerciseUser[exerciseUser.length - 1])
-            })
-            .catch(err => {
-                app.logger.error(err, __filename)
-                res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar seus exercícios.' })
-            })
-    }
-
     const Insert = async (req, res) => {
         const { title, day_of_week, loop, delay_time } = req.body
 
@@ -41,6 +28,7 @@ module.exports = app => {
                 day_of_week: moment(new Date()).format('dddd').toLowerCase(),
                 loop,
                 delay_time,
+                created_at: new Date(),
                 user_id: req.user.id
             })
 
@@ -73,5 +61,5 @@ module.exports = app => {
 
     }
 
-    return { Get, GetLast, Insert, Delete }
+    return { Get, Insert, Delete }
 }

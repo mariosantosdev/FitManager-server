@@ -23,18 +23,9 @@ module.exports = app => {
         .put(app.controllers.user.Update)
         .delete(app.controllers.user.Delete)
 
-    //Get Last
-    app.route('/weight/last')
+    app.route('/user/info')
         .all(app.controllers.passport.authenticate())
-        .get(app.controllers.weight.GetLast)
-
-    app.route('/exercise/last')
-        .all(app.controllers.passport.authenticate())
-        .get(app.controllers.exercise.GetLast)
-
-    app.route('/height/last')
-        .all(app.controllers.passport.authenticate())
-        .get(app.controllers.height.GetLast)
+        .get(app.controllers.user.GetDateFromHomePage)
 
     // Delete and Update
 

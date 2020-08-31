@@ -1,13 +1,13 @@
-const { secretKey } = require('../.env')
+require('dotenv').config()
 const passport = require('passport')
 const { Strategy, ExtractJwt } = require('passport-jwt')
 
-const opts = {
-    secretOrKey: secretKey,
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
-}
-
 module.exports = app => {
+    const opts = {
+        secretOrKey: process.env.SECRET_KEY,
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+    }
+
     passport.use(new Strategy(opts, (payload, done) => {
         app.db('users_table').where({ id: payload.id })
             .then(user => {

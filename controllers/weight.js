@@ -15,19 +15,6 @@ module.exports = app => {
             })
     }
 
-    const GetLast = (req, res) => {
-        app.db('weight_table').where({ user_id: req.user.id }).select('id', 'title', 'date')
-            .then(weightUser => {
-                if (weightUser.length <= 0) return res.json([])
-
-                res.send(weightUser[weightUser.length - 1])
-            })
-            .catch(err => {
-                app.logger.error(err, __filename)
-                res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar seus pesos.' })
-            })
-    }
-
     const Insert = async (req, res) => {
         const { title, date } = req.body
 
@@ -39,6 +26,7 @@ module.exports = app => {
             await trx('weight_table').insert({
                 title,
                 date: moment(new Date()).format('ddd, DD [de] MMM'),
+                created_at: new Date(),
                 user_id: req.user.id
             })
 
@@ -71,5 +59,5 @@ module.exports = app => {
 
     }
 
-    return { Get, GetLast, Insert, Delete }
+    return { Get, Insert, Delete }
 }

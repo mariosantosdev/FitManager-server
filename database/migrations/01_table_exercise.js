@@ -5,6 +5,7 @@ exports.up = function (knex, Promise) {
         table.string('day_of_week').notNullable()
         table.string('loop').notNullable()
         table.string('delay_time').notNullable()
+        table.datetime('created_at').notNullable()
         table.integer('user_id').notNullable()
             .references('id')
             .inTable('users_table')

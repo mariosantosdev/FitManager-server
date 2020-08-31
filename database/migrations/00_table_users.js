@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
         table.string('name').notNullable()
         table.string('email').notNullable()
         table.string('password').notNullable()
-        table.string('avatar')
+        table.datetime('created_at').notNullable()
     })
 }
 

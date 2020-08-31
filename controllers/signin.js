@@ -1,4 +1,3 @@
-const { secretKey } = require('../.env')
 const bcrypt = require('bcryptjs')
 const jwt = require('jwt-simple')
 
@@ -25,7 +24,7 @@ module.exports = app => {
                     delete user[0].password // Retira a senha do objeto usuario
                     res.json({
                         user: user[0],
-                        token: jwt.encode(payload, secretKey)
+                        token: jwt.encode(payload, app.secretKey)
                     })
                 })
             })

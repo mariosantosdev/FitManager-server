@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs')
+const moment = require('moment')
+moment.locale('pt-br')
 
 module.exports = app => {
     // Funcao para gerar uma hash da senha
@@ -31,7 +33,8 @@ module.exports = app => {
                         await trx('users_table').insert({
                             name,
                             email,
-                            password: hashPassword
+                            password: hashPassword,
+                            created_at: new Date()
                         })
 
                         trx.commit()

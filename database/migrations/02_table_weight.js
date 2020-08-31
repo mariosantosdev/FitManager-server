@@ -2,7 +2,8 @@ exports.up = function (knex, Promise) {
     return knex.schema.createTable('weight_table', table => {
         table.increments('id').primary()
         table.string('title').notNullable()
-        table.date('date').notNullable()
+        table.string('date').notNullable()
+        table.datetime('created_at').notNullable()
         table.integer('user_id').notNullable()
             .references('id')
             .inTable('users_table')
