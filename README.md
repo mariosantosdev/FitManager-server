@@ -59,7 +59,7 @@ $ npm run start
 
 | ENDPOINT | Method | Body | URL Params | Success Response | Server Error Response 
 |--|--|--|--|--|--|
-| / | `POST`  | - | - |**Code:** 200 - OK<br />**Content:** `{ user: {<email>, <password>}, token: <Token JWT> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
+| / | `POST`  | `{ <email>, <password> }` | - |**Code:** 200 - OK<br />**Content:** `{ user: {<email>, <password>}, token: <Token JWT> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 
 #### Signup Route
 - **This is the route that you can use to create a new user**
@@ -67,7 +67,7 @@ $ npm run start
 
 | ENDPOINT | Method | Body | URL Params | Success Response | Server Error Response 
 |--|--|--|--|--|--|
-| / | `POST`  | `{ user: {<name>, <email>, <password>}, token: <Token JWT> }` | - |**Code:** 200 - OK<br />**Content:** `{message: <A Message Success>}`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
+| / | `POST`  | `{ <name>, <email>, <password> }` | - |**Code:** 200 - OK<br />**Content:** `{message: <A Message Success>}`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 
 #### User Route
 > http://localhost:3000/user
