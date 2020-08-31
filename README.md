@@ -75,6 +75,7 @@ $ npm run start
 | ENDPOINT | Method | Body | URL Params | Success Response | Server Error Response 
 |--|--|--|--|--|--|
 | / | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `{ user: {<id>, <name>, <email>, <avatar>}, token: <Token JWT> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
+| /info | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `{<weight>, <height>, <IMC>}`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 | / | `PUT`  | `{<Fields to update>}` | - |**Code:** 200 - OK<br />**Content:** `{ message: <A Message of success>, token: <Token JWT> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 | / | `DELETE`  | - | - |**Code:** 200 - OK<br />**Content:** `{ message: <A Message of success> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 
@@ -84,7 +85,6 @@ $ npm run start
 | ENDPOINT | Method | Body | URL Params | Success Response | Server Error Response 
 |--|--|--|--|--|--|
 | / | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `[ {<id>, <title>, <date>}, {<id>, <title>, <date>}, ... ]`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
-| /last | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `{<id>, <title>, <date>}`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 | / | `POST`  | `{<title>, <date>}` | - |**Code:** 200 - OK<br />**Content:** `{ message: <A Message of success> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 | / | `DELETE`  | - | id |**Code:** 200 - OK<br />**Content:** `{ message: <A Message of success> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 
@@ -103,7 +103,6 @@ $ npm run start
 | ENDPOINT | Method | Body | URL Params | Success Response | Server Error Response 
 |--|--|--|--|--|--|
 | / | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `[ {<id>, <title>, <date>}, {<id>, <title>, <date>}, ... ]`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
-| /last | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `{<id>, <title>, <date>}`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 | / | `POST`  | `{<title>, <date>}` | - |**Code:** 200 - OK<br />**Content:** `{ message: <A Message of success> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 | / | `DELETE`  | - | id |**Code:** 200 - OK<br />**Content:** `{ message: <A Message of success> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 
@@ -147,18 +146,18 @@ $ npm run start
   - [ ] - Forgot Password
 
 ### App Routes
-  - [x]  Create New Weight
-  - [x]  Delete Weight
-  - [x]  List Weight
-  - [x]  Create New Height
-  - [x]  Delete Height
-  - [x]  List Height
-  - [x]  Create New Exercise
-  - [x]  Delete Exercise
-  - [x]  List Exercise
-  - [x]  List End Weight, End Height
-  - [x]  Edit Profile
-  - [ ] Calculate IMC
+ - [x] Create New Weight
+  - [x] Delete Weight
+  - [x] List Weight
+  - [x] Create New Height
+  - [x] Delete Height
+  - [x] List Height
+  - [x] Create New Exercise
+  - [x] Delete Exercise
+  - [x] List Exercise
+  - [x] List End Weight, End Height
+  - [x] Edit Profile
+ - [x] Calculate IMC
  
 ## Built With
 - [NodeJS](https://nodejs.org/en/) - Build the project
