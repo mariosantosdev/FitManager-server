@@ -42,7 +42,7 @@ module.exports = app => {
     }
 
     const Delete = async (req, res) => {
-        if (!req?.params?.id) return res.status(400).json({ message: 'Id de exercício inválido.' })
+        if (!req.params.id) return res.status(400).json({ message: 'Id de exercício inválido.' })
 
         try {
             app.db('exercise_table')

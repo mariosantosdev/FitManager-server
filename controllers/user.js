@@ -66,7 +66,7 @@ module.exports = app => {
 
     const Update = async (req, res) => {
         try {
-            if (req?.body?.password && req?.body?.password.trim() !== '') req.body.password = await GenerateHash(req.body.password)
+            if (req.body.password && req.body.password.trim() !== '') req.body.password = await GenerateHash(req.body.password)
 
             app.db('users_table')
                 .where({ id: req.user.id })

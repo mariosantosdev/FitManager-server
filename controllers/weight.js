@@ -40,7 +40,7 @@ module.exports = app => {
     }
 
     const Delete = async (req, res) => {
-        if (!req?.params?.id) return res.status(400).json({ message: 'Id de peso inválido.' })
+        if (!req.params.id) return res.status(400).json({ message: 'Id de peso inválido.' })
 
         try {
             app.db('weight_table')

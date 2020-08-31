@@ -6,8 +6,8 @@ module.exports = app => {
         const { email, password } = req.body
 
         // Verifica se foi passado o email e a senha
-        if (!email || toString(email?.trim()) === '') return res.status(400).json({ message: 'Você não passou o seu email.' })
-        if (!password || toString(password?.trim()) === '') return res.status(400).json({ message: 'Você não passou a sua senha.' })
+        if (!email || toString(email.trim()) === '') return res.status(400).json({ message: 'Você não passou o seu email.' })
+        if (!password || toString(password.trim()) === '') return res.status(400).json({ message: 'Você não passou a sua senha.' })
 
         // Procura no banco de dados algum usuario com o email passado
         app.db('users_table').where({ email })
