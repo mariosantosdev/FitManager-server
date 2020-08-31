@@ -25,10 +25,10 @@ module.exports = app => {
         try {
             await trx('exercise_table').insert({
                 title,
-                day_of_week: moment(new Date()).format('dddd').toLowerCase(),
+                day_of_week: moment(date).format('dddd').toLowerCase(),
                 loop,
                 delay_time,
-                created_at: new Date(),
+                created_at: date,
                 user_id: req.user.id
             })
 

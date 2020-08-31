@@ -25,8 +25,8 @@ module.exports = app => {
         try {
             await trx('weight_table').insert({
                 title,
-                date: moment(new Date()).format('ddd, DD [de] MMM'),
-                created_at: new Date(),
+                date: moment(date).format('ddd, DD [de] MMM'),
+                created_at: date,
                 user_id: req.user.id
             })
 
