@@ -1,4 +1,8 @@
 module.exports = app => {
+    app.get('/', (req, res) => {
+        res.sendFile(`${__dirname}\\index.html`)
+    })
+
     app.post('/signup', app.controllers.signup)
     app.post('/signin', app.controllers.signin)
 
