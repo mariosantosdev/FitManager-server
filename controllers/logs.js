@@ -9,7 +9,7 @@ module.exports = app => {
         } else if (req.params.type === 'debug') {
             res.sendFile(path.resolve('./logs/debug.txt'))
         } else {
-            res.status(500).json({ message: 'Esse tipo de log não existe no nosso sistema!' })
+            res.status(400).json({ message: 'Esse tipo de log não existe no nosso sistema!' })
         }
     }
 }
