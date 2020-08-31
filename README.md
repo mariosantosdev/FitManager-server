@@ -106,6 +106,15 @@ $ npm run start
 | / | `POST`  | `{<title>, <date>}` | - |**Code:** 200 - OK<br />**Content:** `{ message: <A Message of success> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 | / | `DELETE`  | - | id |**Code:** 200 - OK<br />**Content:** `{ message: <A Message of success> }`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 
+#### Logs Route
+> http://localhost:3000/logs
+
+| ENDPOINT | Method | Body | URL Params | Success Response | Server Error Response 
+|--|--|--|--|--|--|
+| /error | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `<log file>`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
+| /info | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `<log file>`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
+| /debug | `GET`  | - | - |**Code:** 200 - OK<br />**Content:** `<log file>`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
+
 ## Database Models
 ### User
  - Id - ```[Integer]```
