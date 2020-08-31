@@ -25,7 +25,7 @@ module.exports = app => {
         try {
             await trx('height_table').insert({
                 title,
-                date: moment(date).format('ddd, DD [de] MMM'),
+                date: moment(date).format('ddd, DD [de] MMM [de] YYYY'),
                 created_at: date,
                 user_id: req.user.id
             })
