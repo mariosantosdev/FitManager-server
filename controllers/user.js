@@ -22,6 +22,7 @@ module.exports = app => {
     }
 
     const RemoveUnitFromString = (array) => {
+        if (array === undefined) return
         variable = array.title.split('').map(letter => {
             if (!isNaN(letter)) return letter
         })
@@ -50,16 +51,23 @@ module.exports = app => {
             const [weightFromDB] = await app.db('weight_table').where({ user_id: req.user.id }).limit(1).orderBy('created_at', 'desc').select('title')
             const [heightFromDB] = await app.db('height_table').where({ user_id: req.user.id }).limit(1).orderBy('created_at', 'desc').select('title')
 
-            weight = RemoveUnitFromString(weightFromDB)
-            height = convert(RemoveUnitFromString(heightFromDB)).from('cm').to('m')
+            if (weightFromDB !== undefined && heightFromDB !== undefined) {
+                weight = RemoveUnitFromString(weightFromDB)
+                height = convert(RemoveUnitFromString(heightFromDB)).from('cm').to('m')
 
-            jsonToReturnWithData.IMC = Number(imc.calc(weight, height))
-            jsonToReturnWithData.weight = weight
-            jsonToReturnWithData.height = RemoveUnitFromString(heightFromDB)
-            res.status(200).json(jsonToReturnWithData)
+                jsonToReturnWithData.IMC = Number(imc.calc(weight, height))
+                jsonToReturnWithData.weight = weight
+                jsonToReturnWithData.height = RemoveUnitFromString(heightFromDB)
+                res.status(200).json(jsonToReturnWithData)
+            } else {
+                if (weightFromDB !== undefined) return res.status(400).json({ message: 'Você não tem nenhum peso cadastrado.' })
+                if (heightFromDB !== undefined) return res.status(400).json({ message: 'Você não tem nenhuma altura cadastrada.' })
+                res.status(400).json({ message: 'Não foi possivel encotrar suas informações.' })
+            }
+
         } catch (err) {
             app.logger.error(err, __filename)
-            res.status(500).json({message: 'Ocorreu um erro no servidor ao procurar suas informações.'})
+            res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar suas informações.' })
         }
 
     }
