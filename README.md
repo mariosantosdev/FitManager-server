@@ -27,6 +27,10 @@ _or_
 $ npm install
 ```
 
+**Set settings**
+ 1. Change name of file `template_env` to `.env`
+ 2. Replace `<KEY>` for your of key (anything), change `<USER>` and `<PASSWORD>` for credentials of connection of mongodb collection
+
 ### Running project
 
 In the environment of development execute
