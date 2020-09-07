@@ -23,19 +23,31 @@ module.exports = app => {
 
     const RemoveUnitFromString = (array) => {
         if (array === undefined) return
-        variable = array.title.split('').map(letter => {
-            if (!isNaN(letter)) return letter
-        })
+        let variable
+        for (let i = 0; i < array.length; i++) {
+            variable = array[i].title.split('').map(letter => {
+                if (!isNaN(letter)) return letter
+            })
+        }
 
         return Number(variable.join(''))
     }
 
     const Get = (req, res) => {
-        app.db('users_table').where({ id: req.user.id }).select('id', 'name', 'email', 'created_at')
-            .then(usersUser => {
-                if (usersUser.length <= 0) return res.json([])
+        app.db.findOne({ email: req.user.email })
+            .then(userFounded => {
+                if (!userFounded || userFounded == undefined || userFounded == []) return res.json([])
 
-                res.status(200).json(usersUser)
+                res.status(200).json({
+                    id: userFounded._id,
+                    name: userFounded.name,
+                    email: userFounded.email,
+                    created_at: userFounded.created_at,
+                    exercise: userFounded.exercise,
+                    height: userFounded.height,
+                    weight: userFounded.weight,
+                    backup: userFounded.backup,
+                })
             })
             .catch(err => {
                 app.logger.error(err, __filename)
@@ -45,23 +57,23 @@ module.exports = app => {
 
     const GetDateFromHomePage = async (req, res) => {
         let jsonToReturnWithData = {}
-        let weight, height
+        let newWeight, newHeight
 
         try {
-            const [weightFromDB] = await app.db('weight_table').where({ user_id: req.user.id }).limit(1).orderBy('created_at', 'desc').select('title')
-            const [heightFromDB] = await app.db('height_table').where({ user_id: req.user.id }).limit(1).orderBy('created_at', 'desc').select('title')
+            const { weight } = await app.db.findOne({ email: req.user.email }).limit(1).sort('created_at').select('weight')
+            const { height } = await app.db.findOne({ email: req.user.email }).limit(1).sort('created_at').select('height')
 
-            if (weightFromDB !== undefined && heightFromDB !== undefined) {
-                weight = RemoveUnitFromString(weightFromDB)
-                height = convert(RemoveUnitFromString(heightFromDB)).from('cm').to('m')
+            if (weight.length > 0 && height.length > 0) {
+                newWeight = RemoveUnitFromString(weight)
+                newHeight = convert(RemoveUnitFromString(height)).from('cm').to('m')
 
-                jsonToReturnWithData.IMC = Number(imc.calc(weight, height))
-                jsonToReturnWithData.weight = weight
-                jsonToReturnWithData.height = RemoveUnitFromString(heightFromDB)
+                jsonToReturnWithData.IMC = Number(imc.calc(newWeight, newHeight))
+                jsonToReturnWithData.weight = newWeight
+                jsonToReturnWithData.height = RemoveUnitFromString(height)
                 res.status(200).json(jsonToReturnWithData)
             } else {
-                if (weightFromDB !== undefined) return res.status(400).json({ message: 'Você não tem nenhum peso cadastrado.' })
-                if (heightFromDB !== undefined) return res.status(400).json({ message: 'Você não tem nenhuma altura cadastrada.' })
+                if (weight.length == 0) return res.status(400).json({ message: 'Você não tem nenhum peso cadastrado.' })
+                if (height.length == 0) return res.status(400).json({ message: 'Você não tem nenhuma altura cadastrada.' })
                 res.status(400).json({ message: 'Não foi possivel encotrar suas informações.' })
             }
 
@@ -76,20 +88,18 @@ module.exports = app => {
         try {
             if (req.body.password && req.body.password.trim() !== '') req.body.password = await GenerateHash(req.body.password)
 
-            app.db('users_table')
-                .where({ id: req.user.id })
-                .update(req.body)
-                .then(async usersUser => {
-                    if (usersUser.length <= 0) return res.json([])
+            app.db.findByIdAndUpdate(req.user._id, req.body)
+                .then(async success => {
+                    if (success.length <= 0) return res.json([])
 
-                    const user = await app.db('users_table').where({ id: req.user.id })
-                    const payload = { id: user[0].id }
+                    const user = await app.db.findOne({ email: req.user.email })
+                    const payload = { id: user._id }
                     const token = jwt.encode(payload, app.secretKey)
                     res.status(200).json({ message: 'Seu perfil foi atualizado.', token })
                 })
                 .catch(err => {
                     app.logger.error(err, __filename)
-                    res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar seu perfil.' })
+                    res.status(500).json({ message: 'Ocorreu um erro no servidor ao atualizar o seu perfil.' })
                 })
 
         } catch (err) {
@@ -100,15 +110,14 @@ module.exports = app => {
 
     const Delete = async (req, res) => {
         try {
-            app.db('users_table')
-                .where({ id: req.user.id })
-                .del()
+            app.db.findByIdAndDelete(req.user._id)
                 .then(_ => {
                     res.status(200).json({ message: 'Seu perfil foi deletado com sucesso.' })
                 })
                 .catch(_ => {
                     res.status(400).json({ message: 'Não foi possivel apagar esse perfil.' })
                 })
+
         } catch (err) {
             app.logger.error(err, __filename)
             res.status(500).json({ message: 'Ocorreu um erro no servidor ao apagar o seu perfil.' })

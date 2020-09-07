@@ -8,15 +8,18 @@ module.exports = app => {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
     }
 
-    passport.use(new Strategy(opts, (payload, done) => {
-        app.db('users_table').where({ id: payload.id })
+    passport.use(new Strategy(opts, async (payload, done) => {
+        app.db.findOne({ email: payload.email })
             .then(user => {
-                if (user.length <= 0) return done(null, false)
+                if (!user) return done(null, false)
 
-                const { id, name, email } = user[0]
-                return done(null, { id, name, email })
+                const { _id, name, email } = user
+                return done(null, { _id, name, email })
             })
-            .catch(err => done(err, false))
+            .catch(err => {
+                console.log(err);
+                return done(err, false)
+            })
     }))
 
     return {

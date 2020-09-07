@@ -10,24 +10,32 @@ module.exports = app => {
         if (!password || toString(password.trim()) === '') return res.status(400).json({ message: 'Você não passou a sua senha.' })
 
         // Procura no banco de dados algum usuario com o email passado
-        app.db('users_table').where({ email })
+        app.db.findOne({ email })
             .then(user => {
-                if (user.length <= 0) return res.status(400).json({ message: 'Usuário não encontrado.' }) // Se nao encontrar nenhum usuario no DB
+                if (!user) return res.status(400).json({ message: 'E-mail não cadastrado.' })
 
-                const hashPasswordDB = user[0].password // Pega a senha com hash do banco de dados
+                const hashPasswordDB = user.password
 
-                bcrypt.compare(password, hashPasswordDB, (err, match) => { // Compara a senha digitada com a senha do banco de dados
-                    if (err) return res.status(500).json({ message: 'Ocorreu um erro no servidor ao fazer login.' }) // Se ocorrer algum erro
-                    if (!match) return res.status(400).json({ message: 'Senha inválida.' }) // Se a senha nao for igual
+                bcrypt.compare(password, hashPasswordDB, (err, match) => {
+                    if (err) return res.status(500).json({ message: 'Ocorreu um erro no servidor ao fazer login.' })
+                    if (!match) return res.status(400).json({ message: 'Senha inválida.' })
 
-                    const payload = { id: user[0].id } // Cria o payload para ser passado para o banco de dados
-                    delete user[0].password // Retira a senha do objeto usuario
-                    res.json({
-                        user: user[0],
+                    const payload = { email: user.email }
+                    res.status(200).json({
+                        user: {
+                            id: user._id,
+                            name: user.name,
+                            email: user.email,
+                            created_at: user.created_at,
+                            exercise: user.exercise
+                        },
                         token: jwt.encode(payload, app.secretKey)
                     })
                 })
             })
-            .catch(_ => res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar o seu e-mail.' }))
+            .catch(err => {
+                app.logger.error(err, __filename)
+                res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar o seu e-mail.' })
+            })
     }
 }

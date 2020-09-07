@@ -3,11 +3,10 @@ moment.locale('pt-br')
 
 module.exports = app => {
     const Get = (req, res) => {
-        app.db('exercise_table').where({ user_id: req.user.id }).select('id', 'title', 'day_of_week', 'loop', 'delay_time')
-            .then(exerciseUser => {
-                if (exerciseUser.length <= 0) return res.json([])
-
-                res.send(exerciseUser)
+        app.db.findOne({ email: req.user.email })
+            .then(userFounded => {
+                if (!userFounded) return res.status(200).json([])
+                res.status(200).json({ exercise: userFounded.exercise })
             })
             .catch(err => {
                 app.logger.error(err, __filename)
@@ -21,20 +20,33 @@ module.exports = app => {
         if (!title || title.trim() == '') return res.status(400).json({ message: 'Você precisa informar o seu exercício.' })
         if (!day_of_week || day_of_week.trim() == '') return res.status(400).json({ message: 'Você precisa informar uma data.' })
 
-        const trx = await app.db.transaction()
         try {
-            await trx('exercise_table').insert({
-                title,
-                day_of_week: day_of_week.toLowerCase(),
-                loop,
-                delay_time,
-                created_at: new Date(),
-                user_id: req.user.id
-            })
+            app.db.find({ email: req.user.email }).select('exercise')
+                .then(exerciseArray => {
+                    if (!exerciseArray || exerciseArray === undefined || exerciseArray === []) exerciseArray = []
 
+                    app.db.findById(req.user._id, (err, user) => {
+                        if (err) {
+                            app.logger.error(err, __filename)
+                            res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar o seu usuário.' })
+                        }
 
-            trx.commit()
-            res.status(200).json({ message: 'Seu exercício foi cadastrado.' })
+                        user.exercise.push({
+                            title,
+                            day_of_week: day_of_week.toLowerCase(),
+                            loop,
+                            delay_time,
+                            created_at: new Date()
+                        })
+                        user.save((err) => {
+                            if (err) {
+                                app.logger.error(err, __filename)
+                                res.status(500).json({ message: 'Ocorreu um erro no servidor ao salvar o seu exercício.' })
+                            }
+                            res.status(200).json({ message: 'Seu exercício foi cadastrado.' })
+                        })
+                    })
+                })
         } catch (err) {
             app.logger.error(err, __filename)
             res.status(500).json({ message: 'Ocorreu um erro no servidor ao inserir o seu exercício.' })
@@ -45,14 +57,29 @@ module.exports = app => {
         if (!req.params.id) return res.status(400).json({ message: 'Id de exercício inválido.' })
 
         try {
-            app.db('exercise_table')
-                .where({ user_id: req.user.id, id: req.params.id })
-                .del()
-                .then(_ => {
-                    res.status(200).json({ message: 'Seu exercício foi deletado com sucesso.' })
-                })
-                .catch(_ => {
-                    res.status(400).json({ message: 'Não foi possivel apagar esse exercício.' })
+            app.db.find({ email: req.user.email }).select('exercise')
+                .then(exerciseArray => {
+                    if (!exerciseArray || exerciseArray === undefined || exerciseArray === []) exerciseArray = []
+
+                    app.db.findById(req.user._id, (err, user) => {
+                        if (err) {
+                            app.logger.error(err, __filename)
+                            res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar o seu usuário.' })
+                        }
+
+                        user.exercise.forEach((elemExercise, indexExercise) => {
+                            if (elemExercise._id == req.params.id) {
+                                return user.exercise.splice(indexExercise, 1)
+                            }
+                        })
+                        user.save((err) => {
+                            if (err) {
+                                app.logger.error(err, __filename)
+                                res.status(400).json({ message: 'Não foi possivel apagar esse exercício.' })
+                            }
+                            res.status(200).json({ message: 'Seu exercício foi deletado com sucesso.' })
+                        })
+                    })
                 })
         } catch (err) {
             app.logger.error(err, __filename)
