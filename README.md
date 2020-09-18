@@ -29,11 +29,7 @@ $ npm install
 
 **Set settings**
  1. Change name of file `template_env` to `.env`
-<<<<<<< HEAD
  2. Replace `<SECRET_KEY>` for your of key (anything), change `<USER_DB>` and `<PASSWORD_DB>` for credentials of connection of mongodb collection and end chance `<EMAIL>` and `<PASSWORD_EMAIL>` for credentials login of your service of email
-=======
- 2. Replace `<KEY>` for your of key (anything), change `<USER>` and `<PASSWORD>` for credentials of connection of mongodb collection
->>>>>>> 1ae7055b00dbab79113dc176b45609054d70627e
 
 ### Running project
 
