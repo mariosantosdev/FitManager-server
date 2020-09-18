@@ -5,6 +5,7 @@ module.exports = app => {
 
     app.post('/signup', app.controllers.signup)
     app.post('/signin', app.controllers.signin)
+    app.post('/forgot', app.controllers.user.Forgot)
 
     app.route('/weight')
         .all(app.controllers.passport.authenticate())

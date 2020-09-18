@@ -20,13 +20,12 @@
     "express": "^4.17.1",
     "fasam-imc-calc": "^0.0.4",
     "jwt-simple": "^0.5.6",
-    "knex": "^0.21.5",
     "moment": "^2.27.0",
     "mongoose": "^5.10.3",
+    "nodemailer": "^6.4.11",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "simple-node-logger": "^18.12.24",
-    "sqlite3": "^5.0.0"
+    "simple-node-logger": "^18.12.24"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

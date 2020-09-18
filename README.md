@@ -27,6 +27,10 @@ _or_
 $ npm install
 ```
 
+**Set settings**
+ 1. Change name of file `template_env` to `.env`
+ 2. Replace `<SECRET_KEY>` for your of key (anything), change `<USER_DB>` and `<PASSWORD_DB>` for credentials of connection of mongodb collection and end chance `<EMAIL>` and `<PASSWORD_EMAIL>` for credentials login of your service of email
+
 ### Running project
 
 In the environment of development execute
@@ -68,6 +72,14 @@ $ npm run start
 | ENDPOINT | Method | Body | URL Params | Success Response | Server Error Response 
 |--|--|--|--|--|--|
 | / | `POST`  | `{ <name>, <email>, <password> }` | - |**Code:** 200 - OK<br />**Content:** `{message: <A Message Success>}`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
+
+#### Forgot Password Route
+- **This is the route that you can use to generate a new password and send to your email**
+> http://localhost:3000/forgot
+
+| ENDPOINT | Method | Body | URL Params | Success Response | Server Error Response 
+|--|--|--|--|--|--|
+| / | `POST`  | `{ <email> }` | - |**Code:** 200 - OK<br />**Content:** `{message: <A Message Success>}`  |  **Code:** 500 _or_ 400 <br />**Content:** `{ error:  <A Message with a description of the Error> }`
 
 #### User Route
 > http://localhost:3000/user
@@ -152,7 +164,7 @@ $ npm run start
 ### Auth Routes
   - [x] - SignUp 
   - [x] - SignIn 
-  - [ ] - Forgot Password
+  - [x] - Forgot Password
 
 ### App Routes
  - [x] Create New Weight
@@ -172,10 +184,8 @@ $ npm run start
 - [NodeJS](https://nodejs.org/en/) - Build the project
 - [body-Parser](https://github.com/expressjs/body-parser) - Node.js body parsing middleware
 - [express](https://expressjs.com/) - Router of the Application
-- [Knex](http://knexjs.org/) - SQL query builder
-- [sqlite3](https://github.com/mapbox/node-sqlite3) - SQL Database
 - [nodemon](https://nodemon.io/) - Process Manager used in the development
-- [bcryptjs](https://github.com/dcodeIO/bcrypt.js) - Library for encode the password in a hash
+- [bcryptjs](https://github.com/dcodeIO/bcrypt.js) - Module for encode the password in a hash
 - [consign](https://github.com/jarradseers/consign) - Autoloader scripts
 - [cors](https://github.com/expressjs/cors) - Middleware for provide connection
 - [jwt-simple](https://github.com/hokaccha/node-jwt-simple) - Encode and Decode JWT
@@ -183,6 +193,8 @@ $ npm run start
 - [passport](http://www.passportjs.org) - Middleware for authenticate
 - [fasam-imc-calc](https://www.npmjs.com/package/fasam-imc-calc) - Calculator IMC
 - [convert-units](https://github.com/ben-ng/convert-units) - Convertor of units
+- [mongoose](https://mongoosejs.com) - Module for model object MongoDB
+- [nodemailer](https://nodemailer.com/) - Module for send email
 
 ## Thanks
 This README was based in [README](https://github.com/steniowagner/mindcast-server/blob/master/README.md)

@@ -3,6 +3,7 @@ moment.locale('pt-br')
 const jwt = require('jwt-simple')
 const bcrypt = require('bcryptjs')
 const convert = require('convert-units')
+const nodemailer = require('nodemailer')
 const calculator = require('fasam-imc-calc')
 
 const imc = new calculator()
@@ -19,6 +20,11 @@ module.exports = app => {
                 })
             })
         })
+    }
+
+    const GeneratePassword = () => {
+        const password = Math.random().toString(36).slice(-8)
+        return password
     }
 
     const RemoveUnitFromString = (array) => {
@@ -125,5 +131,56 @@ module.exports = app => {
 
     }
 
-    return { Get, GetDateFromHomePage, Update, Delete }
+    const Forgot = async (req, res) => {
+        if (!req.body.email || req.body.password && req.body.password.trim() !== '') return res.status(400).json({ message: 'Nenhum email passado para a recuperação de senha.' })
+
+        app.db.findOne({ email: req.body.email })
+            .then(async userFounded => {
+                if (!userFounded || userFounded == undefined || userFounded == []) return res.status(400).json({ message: 'Esse email não está cadastrado.' })
+
+                const newPassword = GeneratePassword()
+                const hashedPassword = await GenerateHash(newPassword)
+
+                app.db.findByIdAndUpdate(userFounded._id, { password: hashedPassword })
+                    .then(async success => {
+                        if (success.length <= 0) return res.status(400).json({ message: 'Não foi possivel atualizar a sua senha.' })
+
+                        const transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            secure: true,
+                            auth: {
+                                user: process.env.EMAIL,
+                                pass: process.env.PASSWORD_EMAIL
+                            }
+                        })
+
+                        const mail = {
+                            from: process.env.EMAIL,
+                            to: req.body.email,
+                            subject: 'Recuperação de senha Fit Manager',
+                            html: `Olá ${userFounded.name} sua nova senha para acessar o app Fit Manager é <b>${newPassword}<b>`
+                        }
+
+                        transporter.sendMail(mail, (err) => {
+                            if (err) {
+                                app.logger.error(err, __filename)
+                                return res.status(500).json({ message: 'Ocorreu um erro no servidor ao enviar a sua nova senha para o seu email.' })
+                            }
+
+                            res.json({message: 'Sua nova senha foi enviada para o seu email, verifique a caixa de spam.'})
+                        })
+                    })
+                    .catch(err => {
+                        app.logger.error(err, __filename)
+                        res.status(500).json({ message: 'Ocorreu um erro no servidor ao atualizar a sua senha.' })
+                    })
+            })
+            .catch(err => {
+                app.logger.error(err, __filename)
+                res.status(500).json({ message: 'Ocorreu um erro no servidor ao procurar seu email.' })
+            })
+
+    }
+
+    return { Get, GetDateFromHomePage, Update, Delete, Forgot }
 }
