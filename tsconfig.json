@@ -7,6 +7,14 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
-    "skipLibCheck": false
-  }
+    "skipLibCheck": false,
+    "outDir": "build",
+    "baseUrl": ".",
+    "paths": {
+      "@source/*": ["./src/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@view/*": ["./src/view/*"]
+    }
+  },
+  "exclude": ["./commitlint.config.js"]
 }
