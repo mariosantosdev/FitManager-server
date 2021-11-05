@@ -13,7 +13,8 @@
     "paths": {
       "@source/*": ["./src/*"],
       "@controllers/*": ["./src/controllers/*"],
-      "@view/*": ["./src/view/*"]
+      "@view/*": ["./src/view/*"],
+      "@services/*": ["./src/services/*"]
     }
   },
   "exclude": ["./commitlint.config.js"]
