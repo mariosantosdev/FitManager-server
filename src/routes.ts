@@ -3,14 +3,18 @@ import { Router } from "express";
 import signUpController from '@controllers/authControllers/signUp.controller';
 import signInController from '@controllers/authControllers/signIn.controller';
 import forgetPassword from '@controllers/authControllers/forgetPassword.controller';
-import tokenController from '@controllers/tokenControllers/refreshToken.controller';
+
+
 import userUpdateController from '@controllers/userControllers/update.controller';
 import userDeleteController from '@controllers/userControllers/delete.controller';
+
 import createExerciseController from "@controllers/exerciseControllers/createExercise.controller";
 import listExercisesController from "@controllers/exerciseControllers/listExercises.controller";
 import listExerciseController from "@controllers/exerciseControllers/listExercise.controller";
 import updateExerciseController from "@controllers/exerciseControllers/updateExercise.controller";
 import deleteExerciseController from "@controllers/exerciseControllers/deleteExercise.controller";
+
+import tokenController from '@controllers/tokenControllers/refreshToken.controller';
 
 import middlewareAuth from "./middlewares/ensureAuth";
 
