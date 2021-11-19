@@ -40,18 +40,18 @@ routes.post('/newToken/:token', tokenController.handle)
 // Authentication Routes
 routes.post('/signup', signUpController.handle);
 routes.post('/signin', signInController.handle);
-routes.post('/forgetPassword', forgetPassword.handle);
+routes.post('/forgot', forgetPassword.handle);
 
 // User Routes
 routes.put('/user', middlewareAuth.handle, userUpdateController.handle)
 routes.delete('/user', middlewareAuth.handle, userDeleteController.handle)
 
 // Exercises Routes
-routes.post('/exercises', middlewareAuth.handle, createExerciseController.handle)
-routes.get('/exercises', middlewareAuth.handle, listExercisesController.handle)
-routes.get('/exercises/:id', middlewareAuth.handle, listExerciseController.handle)
-routes.put('/exercises/:id', middlewareAuth.handle, updateExerciseController.handle)
-routes.delete('/exercises/:id', middlewareAuth.handle, deleteExerciseController.handle)
+routes.post('/exercise', middlewareAuth.handle, createExerciseController.handle)
+routes.get('/exercise', middlewareAuth.handle, listExercisesController.handle)
+routes.get('/exercise/:id', middlewareAuth.handle, listExerciseController.handle)
+routes.put('/exercise/:id', middlewareAuth.handle, updateExerciseController.handle)
+routes.delete('/exercise/:id', middlewareAuth.handle, deleteExerciseController.handle)
 
 // Weight Routes
 routes.get('/weight', middlewareAuth.handle, listWeightsController.handle)
