@@ -21,5 +21,5 @@ routes.post('/signin', signInController.handle);
 routes.post('/forgetPassword', forgetPassword.handle);
 
 // User Routes
-routes.put('/user/update', middlewareAuth.handle, userUpdateController.handle)
+routes.put('/user', middlewareAuth.handle, userUpdateController.handle)
 export default routes;
