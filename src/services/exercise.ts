@@ -7,6 +7,14 @@ export interface IDataCreateExercise {
     delay_time?: string;
 }
 
+export type DayWeek = 'seg' | 'tec' | 'qua' | 'qui' | 'sex' | 'sab' | 'dom';
+
+interface IOptionsListExercises {
+    skip?: number;
+    take?: number;
+    day?: DayWeek;
+}
+
 class ExerciseService {
     prisma = new PrismaClient;
 
@@ -21,6 +29,25 @@ class ExerciseService {
                 });
 
                 resolve(createdExercise);
+            } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
+    listExercises(userID: number, options: IOptionsListExercises) {
+        return new Promise<Exercise[]>(async (resolve, reject) => {
+            try {
+                const { day, skip } = options;
+                const take = options?.take || 25;
+
+                const exercises = await this.prisma.exercise.findMany({
+                    where: { user_id: userID, day_of_week: day },
+                    skip,
+                    take
+                });
+
+                resolve(exercises);
             } catch (error) {
                 reject(error);
             }
