@@ -21,7 +21,7 @@ function checkExistUserFromID(id: number) {
         try {
             const prisma = new PrismaClient();
 
-            const existUser = prisma.user.findFirst({
+            const existUser = await prisma.user.findFirst({
                 where: { id }
             });
 
@@ -41,7 +41,7 @@ class EnsureAuthMiddleware {
 
         try {
             const sub = verifyToken(token)
-            if (await checkExistUserFromID(Number(sub))) return res.status(401).json({ message: 'User doesn\'t found.' });
+            if (!await checkExistUserFromID(Number(sub))) return res.status(401).json({ message: 'User doesn\'t found.' });
 
             req.user_id = Number(sub);
 
