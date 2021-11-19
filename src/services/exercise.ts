@@ -53,6 +53,20 @@ class ExerciseService {
             }
         })
     }
+
+    listExercise(userID: number, exerciseID: number) {
+        return new Promise<Exercise>(async (resolve, reject) => {
+            try {
+                const exercise = await this.prisma.exercise.findFirst({
+                    where: { id: exerciseID, user_id: userID }
+                });
+
+                resolve(exercise);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }
 
 export default new ExerciseService();
