@@ -52,6 +52,13 @@ class AuthServices {
                 const matchPassword = bcrypt.compareSync(password, user.password);
                 if (!matchPassword) reject('User or password is wrong.');
 
+                await this.prisma.user.update({
+                    where: { email },
+                    data: {
+                        last_login: new Date()
+                    }
+                })
+
                 delete user.password;
                 resolve(user);
             } catch (error) {
