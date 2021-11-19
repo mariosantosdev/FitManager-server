@@ -83,6 +83,20 @@ class WeightService {
         });
 
     }
+
+    delete(weightID: number) {
+        return new Promise<Boolean>(async (resolve, reject) => {
+            try {
+                await this.prisma.weight.delete({
+                    where: { id: weightID }
+                });
+
+                resolve(true);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }
 
 export default new WeightService();
