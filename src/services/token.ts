@@ -5,6 +5,10 @@ import { PrismaClient } from '@prisma/client';
 class TokenService {
     prisma = new PrismaClient();
 
+    checkTokenIsExpiredFromDate(dateUnix: number) {
+        return dayjs().isBefore(dateUnix);
+    }
+
     generateToken(userID: number) {
         const expiresIn = dayjs().add(1, 'day').unix();
 
@@ -40,7 +44,8 @@ class TokenService {
                     await this.prisma.refreshToken.create({
                         data: {
                             user_id: userID,
-                            expires_in: expiresIn
+                            expires_in: expiresIn,
+                            token,
                         }
                     });
 
@@ -50,6 +55,37 @@ class TokenService {
                 reject(error);
             }
         });
+    }
+
+    generateNewTokenFromRefreshToken(userID: number) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (!userID) reject('Unauthorization.');
+
+                const prisma = new PrismaClient();
+
+                prisma.$connect();
+
+                const existRefreshToken = await prisma.refreshToken.findFirst({
+                    where: { user_id: userID },
+                    rejectOnNotFound: true
+                });
+
+                if (this.checkTokenIsExpiredFromDate(existRefreshToken.expires_in)) {
+                    await this.generateRefreshToken(userID);
+
+                    await prisma.refreshToken.delete({
+                        where: { id: existRefreshToken.id }
+                    });
+                }
+
+                const newToken = await this.generateToken(userID);
+
+                resolve(newToken);
+            } catch (error) {
+                reject(error);
+            }
+        })
     }
 
     verifyHasAlreadyExistRefreshToken(userID: number) {
