@@ -44,8 +44,7 @@ class TokenService {
                     await this.prisma.refreshToken.create({
                         data: {
                             user_id: userID,
-                            expires_in: expiresIn,
-                            token,
+                            expires_in: expiresIn
                         }
                     });
 
