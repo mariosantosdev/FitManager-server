@@ -29,6 +29,29 @@ class AuthServices {
         return Promise.resolve(promise);
     }
 
+    signIn(email: string, password: string) {
+        return new Promise<User>(async (resolve, reject) => {
+            try {
+                const user = await this.prisma.user.findFirst({
+                    where: { email },
+                    rejectOnNotFound: true,
+                    include: {
+                        weight: { take: 1 },
+                        height: { take: 1 }
+                    }
+                });
+
+                const matchPassword = bcrypt.compareSync(password, user.password);
+                if (!matchPassword) reject('User or password is wrong.');
+
+                delete user.password;
+                resolve(user);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
     generatePasswordHash(password: string) {
         const promise = new Promise<string>((resolve, rejest) => {
             try {

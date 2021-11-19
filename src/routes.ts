@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import signUpController from '@controllers/authControllers/signUp.controller';
+import signInController from '@controllers/authControllers/signIn.controller';
 import tokenController from '@controllers/tokenControllers/refreshToken.controller';
 import middlewareAuth from "./middlewares/ensureAuth";
 
@@ -14,5 +15,6 @@ routes.post('/newToken/:token', tokenController.handle)
 
 // Authentication Routes
 routes.post('/signup', signUpController.handle);
+routes.post('/signn', signInController.handle);
 
 export default routes;
