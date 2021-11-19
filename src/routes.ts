@@ -19,6 +19,12 @@ import createWeightController from "@controllers/weightControllers/createWeight.
 import updateWeightController from "@controllers/weightControllers/updateWeight.controller";
 import deleteWeightController from "@controllers/weightControllers/deleteWeight.controller";
 
+import listHeightsController from "@controllers/heightControllers/listHeights.controller";
+import listHeightController from "@controllers/heightControllers/listHeight.controller";
+import createHeightController from "@controllers/heightControllers/createHeight.controller";
+import updateHeightController from "@controllers/heightControllers/updateHeight.controller";
+import deleteHeightController from "@controllers/heightControllers/deleteHeight.controller";
+
 import tokenController from '@controllers/tokenControllers/refreshToken.controller';
 
 import middlewareAuth from "./middlewares/ensureAuth";
@@ -53,5 +59,12 @@ routes.get('/weight/:id', middlewareAuth.handle, listWeightController.handle)
 routes.post('/weight', middlewareAuth.handle, createWeightController.handle)
 routes.put('/weight/:id', middlewareAuth.handle, updateWeightController.handle)
 routes.delete('/weight/:id', middlewareAuth.handle, deleteWeightController.handle)
+
+// Height Routes
+routes.get('/height', middlewareAuth.handle, listHeightsController.handle)
+routes.get('/height/:id', middlewareAuth.handle, listHeightController.handle)
+routes.post('/height', middlewareAuth.handle, createHeightController.handle)
+routes.put('/height/:id', middlewareAuth.handle, updateHeightController.handle)
+routes.delete('/height/:id', middlewareAuth.handle, deleteHeightController.handle)
 
 export default routes;
