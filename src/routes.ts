@@ -4,7 +4,6 @@ import signUpController from '@controllers/authControllers/signUp.controller';
 import signInController from '@controllers/authControllers/signIn.controller';
 import forgetPassword from '@controllers/authControllers/forgetPassword.controller';
 
-
 import userUpdateController from '@controllers/userControllers/update.controller';
 import userDeleteController from '@controllers/userControllers/delete.controller';
 
@@ -42,4 +41,6 @@ routes.get('/exercises/:id', middlewareAuth.handle, listExerciseController.handl
 routes.put('/exercises/:id', middlewareAuth.handle, updateExerciseController.handle)
 routes.delete('/exercises/:id', middlewareAuth.handle, deleteExerciseController.handle)
 
+// Weight Routes
+routes.get('/weight', middlewareAuth.handle, listExercisesController.handle)
 export default routes;
