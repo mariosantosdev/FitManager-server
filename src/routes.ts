@@ -6,7 +6,7 @@ import forgetPassword from '@controllers/authControllers/forgetPassword.controll
 import tokenController from '@controllers/tokenControllers/refreshToken.controller';
 import userUpdateController from '@controllers/userControllers/update.controller';
 import userDeleteController from '@controllers/userControllers/delete.controller';
-
+import createExerciseController from "@controllers/exerciseControllers/createExercise.controller";
 import middlewareAuth from "./middlewares/ensureAuth";
 
 const routes = Router();
@@ -26,4 +26,6 @@ routes.post('/forgetPassword', forgetPassword.handle);
 routes.put('/user', middlewareAuth.handle, userUpdateController.handle)
 routes.delete('/user', middlewareAuth.handle, userDeleteController.handle)
 
+// Exercises Routes
+routes.post('/exercises', middlewareAuth.handle, createExerciseController.handle)
 export default routes;
