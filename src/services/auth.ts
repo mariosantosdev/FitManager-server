@@ -44,8 +44,8 @@ class AuthServices {
                     where: { email },
                     rejectOnNotFound: true,
                     include: {
-                        weight: { take: 1 },
-                        height: { take: 1 }
+                        weight: { take: 1, orderBy: [{ created_at: 'desc' }] },
+                        height: { take: 1, orderBy: [{ created_at: 'desc' }] }
                     }
                 });
 
