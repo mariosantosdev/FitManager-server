@@ -48,5 +48,6 @@ routes.delete('/exercises/:id', middlewareAuth.handle, deleteExerciseController.
 // Weight Routes
 routes.get('/weight', middlewareAuth.handle, listWeightsController.handle)
 routes.get('/weight/:id', middlewareAuth.handle, listWeightController.handle)
-routes.post('/weight', middlewareAuth.handle, createExerciseController.handle)
+routes.post('/weight', middlewareAuth.handle, createWeightController.handle)
+routes.put('/weight/:id', middlewareAuth.handle, updateWeightController.handle)
 export default routes;

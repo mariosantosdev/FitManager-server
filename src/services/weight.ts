@@ -5,6 +5,11 @@ export interface IDataCreateWeight {
     date: string;
 }
 
+export interface IDataUpdateWeight {
+    title?: string;
+    date?: string;
+}
+
 interface IOptionsListWeights {
     skip?: number;
     take?: number;
@@ -61,6 +66,22 @@ class WeightService {
                 reject(error);
             }
         })
+    }
+
+    update(weightID: number, data: IDataUpdateWeight) {
+        return new Promise<Weight>(async (resolve, reject) => {
+            try {
+                const weight = await this.prisma.weight.update({
+                    data,
+                    where: { id: weightID }
+                });
+
+                resolve(weight);
+            } catch (error) {
+                reject(error);
+            }
+        });
+
     }
 }
 
