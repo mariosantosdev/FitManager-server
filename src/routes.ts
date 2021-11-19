@@ -15,6 +15,6 @@ routes.post('/newToken/:token', tokenController.handle)
 
 // Authentication Routes
 routes.post('/signup', signUpController.handle);
-routes.post('/signn', signInController.handle);
+routes.post('/signin', signInController.handle);
 
 export default routes;
