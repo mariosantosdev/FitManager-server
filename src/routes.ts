@@ -15,6 +15,8 @@ import deleteExerciseController from "@controllers/exerciseControllers/deleteExe
 
 import listWeightsController from "@controllers/weightControllers/listWeights.controller";
 import listWeightController from "@controllers/weightControllers/listWeight.controller";
+import createWeightController from "@controllers/weightControllers/createWeight.controller";
+
 import tokenController from '@controllers/tokenControllers/refreshToken.controller';
 
 import middlewareAuth from "./middlewares/ensureAuth";
@@ -46,4 +48,5 @@ routes.delete('/exercises/:id', middlewareAuth.handle, deleteExerciseController.
 // Weight Routes
 routes.get('/weight', middlewareAuth.handle, listWeightsController.handle)
 routes.get('/weight/:id', middlewareAuth.handle, listWeightController.handle)
+routes.post('/weight', middlewareAuth.handle, createExerciseController.handle)
 export default routes;

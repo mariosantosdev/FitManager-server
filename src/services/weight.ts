@@ -1,5 +1,10 @@
 import { PrismaClient, Weight } from '@prisma/client';
 
+export interface IDataCreateWeight {
+    title: string;
+    date: string;
+}
+
 interface IOptionsListWeights {
     skip?: number;
     take?: number;
@@ -35,6 +40,23 @@ class WeightService {
                 });
 
                 resolve(weights);
+            } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
+    create(userID: number, data: IDataCreateWeight) {
+        return new Promise<Weight>(async (resolve, reject) => {
+            try {
+                const createdWeight = await this.prisma.weight.create({
+                    data: {
+                        ...data,
+                        user_id: userID,
+                    }
+                });
+
+                resolve(createdWeight);
             } catch (error) {
                 reject(error);
             }
