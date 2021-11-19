@@ -4,6 +4,7 @@ import signUpController from '@controllers/authControllers/signUp.controller';
 import signInController from '@controllers/authControllers/signIn.controller';
 import forgetPassword from '@controllers/authControllers/forgetPassword.controller';
 import tokenController from '@controllers/tokenControllers/refreshToken.controller';
+import userUpdateController from '@controllers/userControllers/update.controller';
 import middlewareAuth from "./middlewares/ensureAuth";
 
 const routes = Router();
@@ -19,4 +20,6 @@ routes.post('/signup', signUpController.handle);
 routes.post('/signin', signInController.handle);
 routes.post('/forgetPassword', forgetPassword.handle);
 
+// User Routes
+routes.put('/user/update', middlewareAuth.handle, userUpdateController.handle)
 export default routes;
