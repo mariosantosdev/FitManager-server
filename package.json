@@ -2,11 +2,12 @@
   "name": "FitManagerBackend",
   "author": "nevr001",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "build/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node .",
+    "start": "node build/index.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --exit-child src/index.ts",
+    "build": "tsc",
     "docker-up": "docker-compose up"
   },
   "dependencies": {
