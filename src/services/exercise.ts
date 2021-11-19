@@ -67,6 +67,20 @@ class ExerciseService {
             }
         });
     }
+
+    delete(exerciseID: number) {
+        return new Promise<Boolean>(async (resolve, reject) => {
+            try {
+                await this.prisma.exercise.delete({
+                    where: { id: exerciseID }
+                });
+
+                resolve(true);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }
 
 export default new ExerciseService();
