@@ -7,6 +7,13 @@ export interface IDataCreateExercise {
     delay_time?: string;
 }
 
+export interface IDataUpdateExercise {
+    title?: string;
+    day_of_week?: string;
+    loop?: string;
+    delay_time?: string;
+}
+
 export type DayWeek = 'seg' | 'tec' | 'qua' | 'qui' | 'sex' | 'sab' | 'dom';
 
 interface IOptionsListExercises {
@@ -59,6 +66,21 @@ class ExerciseService {
             try {
                 const exercise = await this.prisma.exercise.findFirst({
                     where: { id: exerciseID, user_id: userID }
+                });
+
+                resolve(exercise);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    update(exerciseID: number, data: IDataUpdateExercise) {
+        return new Promise<Exercise>(async (resolve, reject) => {
+            try {
+                const exercise = await this.prisma.exercise.update({
+                    data,
+                    where: { id: exerciseID }
                 });
 
                 resolve(exercise);

@@ -9,6 +9,7 @@ import userDeleteController from '@controllers/userControllers/delete.controller
 import createExerciseController from "@controllers/exerciseControllers/createExercise.controller";
 import listExercisesController from "@controllers/exerciseControllers/listExercises.controller";
 import listExerciseController from "@controllers/exerciseControllers/listExercise.controller";
+import updateExerciseController from "@controllers/exerciseControllers/updateExercise.controller";
 import deleteExerciseController from "@controllers/exerciseControllers/deleteExercise.controller";
 
 import middlewareAuth from "./middlewares/ensureAuth";
@@ -34,6 +35,7 @@ routes.delete('/user', middlewareAuth.handle, userDeleteController.handle)
 routes.post('/exercises', middlewareAuth.handle, createExerciseController.handle)
 routes.get('/exercises', middlewareAuth.handle, listExercisesController.handle)
 routes.get('/exercises/:id', middlewareAuth.handle, listExerciseController.handle)
+routes.put('/exercises/:id', middlewareAuth.handle, updateExerciseController.handle)
 routes.delete('/exercises/:id', middlewareAuth.handle, deleteExerciseController.handle)
 
 export default routes;
