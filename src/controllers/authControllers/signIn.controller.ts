@@ -20,6 +20,21 @@ class SignInController {
             res.status(500).json({ message: error });
         }
     }
+
+    async usingToken(req: Request, res: Response) {
+        try {
+            if (!req.user_id) return res.status(401).json({ message: 'UserID não encontrado.' });
+
+            const user = await authService.signInWithToken(req.user_id);
+            const token = await tokenService.generateToken(req.user_id);
+
+            return res.status(201).json({ user, token });
+        } catch (error) {
+            console.error(error);
+
+            res.status(500).json({ message: error });
+        }
+    }
 }
 
 export default new SignInController();

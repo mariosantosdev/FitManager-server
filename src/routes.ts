@@ -40,6 +40,7 @@ routes.post('/newToken/:token', tokenController.handle)
 // Authentication Routes
 routes.post('/signup', signUpController.handle);
 routes.post('/signin', signInController.handle);
+routes.post('/signin/token', middlewareAuth.handle, signInController.usingToken);
 routes.post('/forgot', forgetPassword.handle);
 
 // User Routes

@@ -68,6 +68,26 @@ class AuthServices {
         });
     }
 
+    signInWithToken(userId: number) {
+        return new Promise<User>(async (resolve, reject) => {
+            try {
+                const user = await this.prisma.user.findUnique({
+                    where: { id: userId },
+                    include: {
+                        weight: { take: 1, orderBy: [{ created_at: 'desc' }] },
+                        height: { take: 1, orderBy: [{ created_at: 'desc' }] },
+                    }
+                });
+
+                if (!user) return reject('Usuário não encontrado.');
+
+                resolve(user);
+            } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
     generatePasswordRecovered() {
         return Math.random().toString(36).slice(-8);
     }
