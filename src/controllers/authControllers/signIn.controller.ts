@@ -12,8 +12,9 @@ class SignInController {
 
             const user = await authService.signIn(email, password);
             const token = await tokenService.generateToken(user.id);
+            const refreshToken = await tokenService.generateRefreshToken(user.id);
 
-            return res.status(201).json({ user, token });
+            return res.status(201).json({ user, token, refreshToken });
         } catch (error) {
             console.error(error);
 
