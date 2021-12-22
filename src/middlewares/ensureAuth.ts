@@ -48,7 +48,7 @@ class EnsureAuthMiddleware {
             return next();
         } catch (error) {
             if (error.name === 'TokenExpiredError') {
-                res.status(401).json({ code: 'token.expired', message: 'Token expired' });
+                return res.status(401).json({ code: 'token.expired', message: 'Token expired' });
             }
 
             const code = error?.name || undefined;
