@@ -8,12 +8,12 @@ class SignUpController {
             const { name, email } = req.body;
             let { password } = req.body;
 
-            if (!String(name.trim())) return res.status(400).json({ message: 'Name is missing.' });
-            if (!String(email.trim())) return res.status(400).json({ message: 'Email is missing.' })
-            if (!String(password.trim())) return res.status(400).json({ message: 'Password is missing.' })
+            if (!String(name.trim())) return res.status(400).json({ message: 'Campo nome inválido.' });
+            if (!String(email.trim())) return res.status(400).json({ message: 'Campo email inválido.' })
+            if (!String(password.trim())) return res.status(400).json({ message: 'Campo senha inválido.' })
 
             const userAlreadyExist = await authService.verifyUserAlreadyExist(email);
-            if (userAlreadyExist) return res.status(400).json({ message: 'User has already exist.' })
+            if (userAlreadyExist) return res.status(400).json({ message: 'E-mail já cadastrado.' })
 
             const user = await authService.createUser({ email, password, name });
             const token = await tokenService.generateToken(user.id);
