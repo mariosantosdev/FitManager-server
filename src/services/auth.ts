@@ -81,6 +81,14 @@ class AuthServices {
 
                 if (!user) return reject('Usuário não encontrado.');
 
+                await this.prisma.user.update({
+                    where: { id: userId },
+                    data: {
+                        last_login: new Date()
+                    }
+                })
+
+                delete user.password;
                 resolve(user);
             } catch (error) {
                 reject(error);
