@@ -42,15 +42,16 @@ class AuthServices {
             try {
                 const user = await this.prisma.user.findFirst({
                     where: { email },
-                    rejectOnNotFound: true,
                     include: {
                         weight: { take: 1, orderBy: [{ created_at: 'desc' }] },
                         height: { take: 1, orderBy: [{ created_at: 'desc' }] }
                     }
                 });
 
+                if (!user) return reject('Usuário ou senha inválido.');
+
                 const matchPassword = bcrypt.compareSync(password, user.password);
-                if (!matchPassword) reject('User or password is wrong.');
+                if (!matchPassword) reject('Usuário ou senha inválido.');
 
                 await this.prisma.user.update({
                     where: { email },
@@ -78,7 +79,7 @@ class AuthServices {
                 const user = await this.prisma.user.findFirst({
                     where: { email }
                 });
-                if (!user) reject('User not found.')
+                if (!user) reject('Usuário inváido.')
 
                 const newPassword = this.generatePasswordRecovered();
                 const hashedPassword = await this.generatePasswordHash(newPassword);

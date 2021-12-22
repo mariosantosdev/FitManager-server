@@ -59,7 +59,7 @@ class TokenService {
     generateNewTokenFromRefreshToken(userID: number) {
         return new Promise(async (resolve, reject) => {
             try {
-                if (!userID) reject('Unauthorization.');
+                if (!userID) reject('Autorização inválida.');
 
                 const prisma = new PrismaClient();
 
