@@ -16,7 +16,7 @@ class TokenService {
             try {
                 const token = jwt.sign({}, process.env.SECRET_KEY, {
                     subject: String(userID),
-                    expiresIn: '10s',
+                    expiresIn,
                 })
 
                 resolve(token);
@@ -33,7 +33,7 @@ class TokenService {
             try {
                 const token = jwt.sign({}, process.env.SECRET_KEY, {
                     subject: String(userID),
-                    expiresIn: '30s',
+                    expiresIn,
                 })
 
                 const existRefreshToken = await this.verifyHasAlreadyExistRefreshToken(userID);
