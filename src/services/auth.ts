@@ -165,7 +165,7 @@ class AuthServices {
 
                 resolve(hash);
             } catch (error) {
-                resolve(error);
+                rejest(error);
             }
         });
 
