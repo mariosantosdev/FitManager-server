@@ -1,9 +1,23 @@
 import { Request, Response, NextFunction } from "express";
-import { verify } from "jsonwebtoken";
+import { verify, decode } from "jsonwebtoken";
 import { PrismaClient } from '@prisma/client';
+import tokenService from '@services/token';
 
 interface IPayload {
     sub: string;
+}
+
+function regenerateToken(token: string) {
+    return new Promise<number>(async (resolve, reject) => {
+        try {
+            const { sub } = decode(token, { json: true });
+
+            await tokenService.generateNewTokenFromRefreshToken(Number(sub));
+            resolve(Number(sub));
+        } catch (error) {
+            reject(error);
+        }
+    })
 }
 
 function verifyToken(token: string) {
@@ -11,7 +25,7 @@ function verifyToken(token: string) {
         const { sub } = verify(token, process.env.SECRET_KEY) as IPayload;
 
         return sub
-    } catch (error) {
+    } catch (error: any) {
         throw error;
     }
 }
@@ -48,7 +62,15 @@ class EnsureAuthMiddleware {
             return next();
         } catch (error) {
             if (error.name === 'TokenExpiredError') {
-                return res.status(401).json({ code: 'token.expired', message: 'Token expired' });
+                return regenerateToken(token)
+                    .then((userID) => {
+                        req.user_id = userID;
+                        return next();
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        res.status(401).json({ code: 'token.expired', message: 'Token expired' })
+                    });
             }
 
             const code = error?.name || undefined;

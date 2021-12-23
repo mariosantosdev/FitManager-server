@@ -12,11 +12,11 @@ class TokenService {
     generateToken(userID: number) {
         const expiresIn = dayjs().add(1, 'day').unix();
 
-        return new Promise((resolve, reject) => {
+        return new Promise<string>((resolve, reject) => {
             try {
                 const token = jwt.sign({}, process.env.SECRET_KEY, {
                     subject: String(userID),
-                    expiresIn,
+                    expiresIn: '10s',
                 })
 
                 resolve(token);
@@ -33,7 +33,7 @@ class TokenService {
             try {
                 const token = jwt.sign({}, process.env.SECRET_KEY, {
                     subject: String(userID),
-                    expiresIn,
+                    expiresIn: '30s',
                 })
 
                 const existRefreshToken = await this.verifyHasAlreadyExistRefreshToken(userID);
@@ -57,7 +57,7 @@ class TokenService {
     }
 
     generateNewTokenFromRefreshToken(userID: number) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise<string>(async (resolve, reject) => {
             try {
                 if (!userID) reject('Autorização inválida.');
 
@@ -66,21 +66,21 @@ class TokenService {
                 prisma.$connect();
 
                 const existRefreshToken = await prisma.refreshToken.findFirst({
-                    where: { user_id: userID },
-                    rejectOnNotFound: true
+                    where: { user_id: userID }
                 });
 
-                if (this.checkTokenIsExpiredFromDate(existRefreshToken.expires_in)) {
-                    await this.generateRefreshToken(userID);
+                if (!existRefreshToken) reject('Não existe Refresh Token, para este usuário.')
 
+                if (!this.checkTokenIsExpiredFromDate(existRefreshToken.expires_in)) {
                     await prisma.refreshToken.delete({
                         where: { id: existRefreshToken.id }
                     });
+
+                    const newToken = await this.generateToken(userID);
+                    resolve(newToken);
+                } else {
+                    reject('Token expirado.');
                 }
-
-                const newToken = await this.generateToken(userID);
-
-                resolve(newToken);
             } catch (error) {
                 reject(error);
             }
