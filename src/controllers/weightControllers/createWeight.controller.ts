@@ -8,8 +8,8 @@ class CreateWeightController {
 
             const { title, date } = req.body;
 
-            if (!String(title.trim())) return res.status(400).json({ message: '"title" is missing.' })
-            if (!String(date.trim())) return res.status(400).json({ message: '"day_of_week" is missing.' })
+            if (!title || !String(title.trim())) return res.status(400).json({ message: 'Campo "exercício" não foi preenchido.' })
+            if (!date || !String(date.trim())) return res.status(400).json({ message: 'Campo "dia da semana" não foi preenchido.' })
 
             const createdWeight = await weightService.create(req.user_id, { title, date });
 
