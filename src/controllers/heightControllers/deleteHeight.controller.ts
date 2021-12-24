@@ -8,7 +8,7 @@ class DeleteHeightController {
 
             const { id } = req.params;
 
-            const height = await heightService.delete(Number(id));
+            const height = await heightService.delete(id);
 
             res.status(200).json({ height });
         } catch (error) {

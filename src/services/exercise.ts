@@ -25,7 +25,7 @@ interface IOptionsListExercises {
 class ExerciseService {
     prisma = new PrismaClient;
 
-    create(userID: number, data: IDataCreateExercise) {
+    create(userID: string, data: IDataCreateExercise) {
         return new Promise<Exercise>(async (resolve, reject) => {
             try {
                 const createdExercise = await this.prisma.exercise.create({
@@ -42,7 +42,7 @@ class ExerciseService {
         })
     }
 
-    listExercises(userID: number, options: IOptionsListExercises) {
+    listExercises(userID: string, options: IOptionsListExercises) {
         return new Promise<Exercise[]>(async (resolve, reject) => {
             try {
                 const { day, skip } = options;
@@ -61,7 +61,7 @@ class ExerciseService {
         })
     }
 
-    listExercise(userID: number, exerciseID: number) {
+    listExercise(userID: string, exerciseID: string) {
         return new Promise<Exercise>(async (resolve, reject) => {
             try {
                 const exercise = await this.prisma.exercise.findFirst({
@@ -75,7 +75,7 @@ class ExerciseService {
         });
     }
 
-    update(exerciseID: number, data: IDataUpdateExercise) {
+    update(exerciseID: string, data: IDataUpdateExercise) {
         return new Promise<Exercise>(async (resolve, reject) => {
             try {
                 const exercise = await this.prisma.exercise.update({
@@ -90,7 +90,7 @@ class ExerciseService {
         });
     }
 
-    delete(exerciseID: number) {
+    delete(exerciseID: string) {
         return new Promise<Boolean>(async (resolve, reject) => {
             try {
                 await this.prisma.exercise.delete({

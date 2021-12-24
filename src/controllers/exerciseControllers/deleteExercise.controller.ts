@@ -8,7 +8,7 @@ class DeleteExerciseController {
 
             const { id } = req.params;
 
-            const exercise = await exerciseService.delete(Number(id));
+            const exercise = await exerciseService.delete(id);
 
             res.status(200).json({ exercise });
         } catch (error) {

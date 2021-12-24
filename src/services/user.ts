@@ -6,7 +6,7 @@ import authService from '@services/auth';
 class UserService {
     prisma = new PrismaClient();
 
-    update(userID: number, data: User) {
+    update(userID: string, data: User) {
         return new Promise<User>(async (resolve, reject) => {
             try {
                 if (data?.password) delete data.password;
@@ -27,7 +27,7 @@ class UserService {
         })
     }
 
-    updatePassword(userID: number, password: string, newPassword: string) {
+    updatePassword(userID: string, password: string, newPassword: string) {
         return new Promise<User>(async (resolve, reject) => {
             try {
                 const { password: passwordHash } = await this.prisma.user.findUnique({
@@ -55,7 +55,7 @@ class UserService {
         })
     }
 
-    delete(userID: number) {
+    delete(userID: string) {
         return new Promise<Boolean>(async (resolve, reject) => {
             try {
                 await this.prisma.backup.deleteMany({

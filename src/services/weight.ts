@@ -18,7 +18,7 @@ interface IOptionsListWeights {
 class WeightService {
     prisma = new PrismaClient;
 
-    listWeight(userID: number, weightID: number) {
+    listWeight(userID: string, weightID: string) {
         return new Promise<Weight>(async (resolve, reject) => {
             try {
                 const weight = await this.prisma.weight.findFirst({
@@ -32,7 +32,7 @@ class WeightService {
         });
     }
 
-    listWeights(userID: number, options: IOptionsListWeights) {
+    listWeights(userID: string, options: IOptionsListWeights) {
         return new Promise<Weight[]>(async (resolve, reject) => {
             try {
                 const { skip } = options;
@@ -51,7 +51,7 @@ class WeightService {
         })
     }
 
-    create(userID: number, data: IDataCreateWeight) {
+    create(userID: string, data: IDataCreateWeight) {
         return new Promise<Weight>(async (resolve, reject) => {
             try {
                 const createdWeight = await this.prisma.weight.create({
@@ -68,7 +68,7 @@ class WeightService {
         })
     }
 
-    update(weightID: number, data: IDataUpdateWeight) {
+    update(weightID: string, data: IDataUpdateWeight) {
         return new Promise<Weight>(async (resolve, reject) => {
             try {
                 const weight = await this.prisma.weight.update({
@@ -84,7 +84,7 @@ class WeightService {
 
     }
 
-    delete(weightID: number) {
+    delete(weightID: string) {
         return new Promise<Boolean>(async (resolve, reject) => {
             try {
                 await this.prisma.weight.delete({

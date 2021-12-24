@@ -15,7 +15,7 @@ class RefreshTokenController {
 
             const { sub, exp } = decode(token, { json: true }) as IPayload;
             if (tokenService.checkTokenIsExpiredFromDate(exp)) {
-                const newToken = await tokenService.generateNewTokenFromRefreshToken(Number(sub));
+                const newToken = await tokenService.generateNewTokenFromRefreshToken(sub);
 
                 return res.status(200).json({ token: newToken });
             }

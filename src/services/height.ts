@@ -18,7 +18,7 @@ interface IOptionsListHeights {
 class HeightService {
     prisma = new PrismaClient;
 
-    listHeight(userID: number, heightID: number) {
+    listHeight(userID: string, heightID: string) {
         return new Promise<Height>(async (resolve, reject) => {
             try {
                 const height = await this.prisma.height.findFirst({
@@ -32,7 +32,7 @@ class HeightService {
         });
     }
 
-    listHeights(userID: number, options: IOptionsListHeights) {
+    listHeights(userID: string, options: IOptionsListHeights) {
         return new Promise<Height[]>(async (resolve, reject) => {
             try {
                 const { skip } = options;
@@ -51,7 +51,7 @@ class HeightService {
         })
     }
 
-    create(userID: number, data: IDataCreateHeight) {
+    create(userID: string, data: IDataCreateHeight) {
         return new Promise<Height>(async (resolve, reject) => {
             try {
                 const createdHeight = await this.prisma.height.create({
@@ -68,7 +68,7 @@ class HeightService {
         })
     }
 
-    update(heightID: number, data: IDataUpdateHeight) {
+    update(heightID: string, data: IDataUpdateHeight) {
         return new Promise<Height>(async (resolve, reject) => {
             try {
                 const height = await this.prisma.height.update({
@@ -84,7 +84,7 @@ class HeightService {
 
     }
 
-    delete(heightID: number) {
+    delete(heightID: string) {
         return new Promise<Boolean>(async (resolve, reject) => {
             try {
                 await this.prisma.height.delete({
