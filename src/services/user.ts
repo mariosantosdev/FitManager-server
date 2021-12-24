@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { User } from '@prisma/client';
-import authService from "./auth";
+import bcrypt from 'bcryptjs';
+import authService from '@services/auth';
 
 class UserService {
     prisma = new PrismaClient();
@@ -8,19 +9,47 @@ class UserService {
     update(userID: number, data: User) {
         return new Promise<User>(async (resolve, reject) => {
             try {
-                const hashPassword = data?.password && await authService.generatePasswordHash(data.password);
+                if (data?.password) delete data.password;
 
                 const user = await this.prisma.user.update({
                     where: { id: userID },
                     data: {
                         ...data,
-                        password: hashPassword,
                         updated_at: new Date(),
                     }
                 });
+                delete user.password;
 
                 resolve(user);
             } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
+    updatePassword(userID: number, password: string, newPassword: string) {
+        return new Promise<User>(async (resolve, reject) => {
+            try {
+                const { password: passwordHash } = await this.prisma.user.findUnique({
+                    where: { id: userID },
+                    select: { password: true },
+                });
+
+                const matchPassword = bcrypt.compareSync(password, passwordHash);
+                if (!matchPassword) return reject('Usuário ou senha inválido.');
+
+                const user = await this.prisma.user.update({
+                    where: { id: userID },
+                    data: {
+                        password: await authService.generatePasswordHash(newPassword),
+                        updated_at: new Date(),
+                    }
+                });
+                delete user.password;
+
+                resolve(user);
+            } catch (error) {
+                console.log(error);
                 reject(error);
             }
         })

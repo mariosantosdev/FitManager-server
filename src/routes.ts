@@ -5,6 +5,7 @@ import signInController from '@controllers/authControllers/signIn.controller';
 import forgetPassword from '@controllers/authControllers/forgetPassword.controller';
 
 import userUpdateController from '@controllers/userControllers/update.controller';
+import userUpdatePasswordController from '@controllers/userControllers/changePassword.controller';
 import userDeleteController from '@controllers/userControllers/delete.controller';
 
 import createExerciseController from "@controllers/exerciseControllers/createExercise.controller";
@@ -45,6 +46,7 @@ routes.post('/forgot', forgetPassword.handle);
 
 // User Routes
 routes.put('/user', middlewareAuth.handle, userUpdateController.handle)
+routes.put('/user/password', middlewareAuth.handle, userUpdatePasswordController.handle)
 routes.delete('/user', middlewareAuth.handle, userDeleteController.handle)
 
 // Exercises Routes
