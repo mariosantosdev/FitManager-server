@@ -8,7 +8,7 @@ class DeleteWeightController {
 
             const { id } = req.params;
 
-            const weight = await weightService.delete(Number(id));
+            const weight = await weightService.delete(id);
 
             res.status(200).json({ weight });
         } catch (error) {

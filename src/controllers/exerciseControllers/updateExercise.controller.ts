@@ -8,7 +8,7 @@ class UpdateExerciseController {
 
             const { id } = req.params;
 
-            const exercise = await exerciseService.update(Number(id), req.body);
+            const exercise = await exerciseService.update(id, req.body);
 
             res.status(200).json({ exercise });
         } catch (error) {

@@ -8,7 +8,7 @@ class ListHeightController {
 
             const { id } = req.params;
 
-            const height = await heightService.listHeight(req.user_id, Number(id));
+            const height = await heightService.listHeight(req.user_id, id);
 
             res.status(200).json({ height });
         } catch (error) {

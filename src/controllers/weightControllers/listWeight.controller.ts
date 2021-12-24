@@ -8,7 +8,7 @@ class ListWeightController {
 
             const { id } = req.params;
 
-            const weight = await weightService.listWeight(req.user_id, Number(id));
+            const weight = await weightService.listWeight(req.user_id, id);
 
             res.status(200).json({ weight });
         } catch (error) {

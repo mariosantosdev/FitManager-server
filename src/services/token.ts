@@ -9,7 +9,7 @@ class TokenService {
         return dayjs().isBefore(dateUnix);
     }
 
-    generateToken(userID: number) {
+    generateToken(userID: string) {
         const expiresIn = dayjs().add(1, 'day').unix();
 
         return new Promise<string>((resolve, reject) => {
@@ -26,7 +26,7 @@ class TokenService {
         })
     }
 
-    generateRefreshToken(userID: number) {
+    generateRefreshToken(userID: string) {
         const expiresIn = dayjs().add(15, 'day').unix();
 
         return new Promise(async (resolve, reject) => {
@@ -56,7 +56,7 @@ class TokenService {
         });
     }
 
-    generateNewTokenFromRefreshToken(userID: number) {
+    generateNewTokenFromRefreshToken(userID: string) {
         return new Promise<string>(async (resolve, reject) => {
             try {
                 if (!userID) reject('Autorização inválida.');
@@ -87,7 +87,7 @@ class TokenService {
         })
     }
 
-    verifyHasAlreadyExistRefreshToken(userID: number) {
+    verifyHasAlreadyExistRefreshToken(userID: string) {
         return new Promise(async (resolve, reject) => {
             try {
                 const refreshToken = await this.prisma.refreshToken.findFirst({

@@ -8,7 +8,7 @@ class UpdateWeightController {
 
             const { id } = req.params;
 
-            const weight = await weightService.update(Number(id), req.body);
+            const weight = await weightService.update(id, req.body);
 
             res.status(200).json({ weight });
         } catch (error) {

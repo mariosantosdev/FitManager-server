@@ -8,7 +8,7 @@ class UpdateHeightController {
 
             const { id } = req.params;
 
-            const height = await heightService.update(Number(id), req.body);
+            const height = await heightService.update(id, req.body);
 
             res.status(200).json({ height });
         } catch (error) {

@@ -68,7 +68,7 @@ class AuthServices {
         });
     }
 
-    signInWithToken(userId: number) {
+    signInWithToken(userId: string) {
         return new Promise<User>(async (resolve, reject) => {
             try {
                 const user = await this.prisma.user.findUnique({

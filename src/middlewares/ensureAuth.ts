@@ -8,12 +8,12 @@ interface IPayload {
 }
 
 function regenerateToken(token: string) {
-    return new Promise<number>(async (resolve, reject) => {
+    return new Promise<string>(async (resolve, reject) => {
         try {
             const { sub } = decode(token, { json: true });
 
-            await tokenService.generateNewTokenFromRefreshToken(Number(sub));
-            resolve(Number(sub));
+            await tokenService.generateNewTokenFromRefreshToken(sub);
+            resolve(sub);
         } catch (error) {
             reject(error);
         }
@@ -30,7 +30,7 @@ function verifyToken(token: string) {
     }
 }
 
-function checkExistUserFromID(id: number) {
+function checkExistUserFromID(id: string) {
     return new Promise(async (resolve, reject) => {
         try {
             const prisma = new PrismaClient();
@@ -55,9 +55,9 @@ class EnsureAuthMiddleware {
 
         try {
             const sub = verifyToken(token)
-            if (!await checkExistUserFromID(Number(sub))) return res.status(401).json({ message: 'User doesn\'t found.' });
+            if (!await checkExistUserFromID(sub)) return res.status(401).json({ message: 'User doesn\'t found.' });
 
-            req.user_id = Number(sub);
+            req.user_id = sub;
 
             return next();
         } catch (error) {

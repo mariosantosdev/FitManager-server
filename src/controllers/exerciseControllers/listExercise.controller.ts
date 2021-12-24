@@ -8,7 +8,7 @@ class ListExerciseController {
 
             const { id } = req.params;
 
-            const exercise = await exerciseService.listExercise(req.user_id, Number(id));
+            const exercise = await exerciseService.listExercise(req.user_id, id);
 
             res.status(200).json({ exercise });
         } catch (error) {
