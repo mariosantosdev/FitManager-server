@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id            Int            @id @default(autoincrement())
+    name          String
+    email         String         @unique
+    password      String
+    exercises     Exercise[]
+    weight        Weight[]
+    height        Height[]
+    backup        Backup[]
+    created_at    DateTime       @default(now())
+    updated_at    DateTime       @default(now())
+    last_login    DateTime       @default(now())
+    refresh_token RefreshToken[]
+}
+
+model Exercise {
+    id          Int      @id @default(autoincrement())
+    title       String
+    day_of_week String
+    loop        String   @default("")
+    delay_time  String   @default("")
+    created_at  DateTime @default(now())
+    user_id     Int
+    user        User     @relation(fields: [user_id], references: [id])
+}
+
+model Weight {
+    id         Int      @id @default(autoincrement())
+    title      String
+    date       String
+    created_at DateTime @default(now())
+    user       User     @relation(fields: [user_id], references: [id])
+    user_id    Int
+}
+
+model Height {
+    id         Int      @id @default(autoincrement())
+    title      String
+    date       String
+    created_at DateTime @default(now())
+    user       User     @relation(fields: [user_id], references: [id])
+    user_id    Int
+}
+
+model Backup {
+    id         Int      @id @default(autoincrement())
+    data       String
+    created_at DateTime @default(now())
+    user       User     @relation(fields: [user_id], references: [id])
+    user_id    Int
+}
+
+model RefreshToken {
+    id         Int  @id @default(autoincrement())
+    expires_in Int
+    user       User @relation(fields: [user_id], references: [id])
+    user_id    Int
+}
